@@ -1,0 +1,32 @@
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 25px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e5e5;
+  font-family: Arial, sans-serif;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.links a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #333;
+  font-size: 15px;
+  transition: 0.2s ease;
+}
+
+.links a:hover {
+  color: #000;
+}
+
+.active {
+  font-weight: bold;
+  border-bottom: 2px solid #000;
+  padding-bottom: 2px;
+}
