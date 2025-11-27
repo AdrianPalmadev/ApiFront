@@ -7,5 +7,8 @@ import { Component } from '@angular/core';
   styleUrl: './login.css',
 })
 export class Login {
-
+  form = false;
+  submit_form() {
+    this.form = true;
+  }
 }

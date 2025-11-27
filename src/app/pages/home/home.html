@@ -3,17 +3,11 @@
     <h2 class="mb-3">Home Works!</h2>
 
     <img [src]="url_nurse" alt="nurse" class="img-fluid mb-4" style="max-width: 150px;">
+    <br>
+    <button class="btn btn-primary mb-3" (click)="click_secret()">Haz click aquí varias veces para descubrir un
+        secreto</button>
 
-    <div class="list-group mb-4">
-        @for (enfermero of enfermeros; track enfermero.id) {
-        <div class="list-group-item d-flex justify-content-between align-items-center">
-            <span>{{ enfermero.nombre }}</span>
-            <small class="text-muted">{{ enfermero.email }}</small>
-        </div>
-        }
-    </div>
-
-    <button class="btn btn-primary mb-3" (click)="click_secret()">Haz click aquí para descubrir un secreto</button>
+    <br>
 
     @if (contador >= 5) {
     <img [src]="url_boo" alt="boo" class="img-fluid mt-3" style="max-width: 150px;">

@@ -1,1 +1,14 @@
-<p>login works!</p>
+<form action="/login" method="post">
+    <label for="usuario">Usuario:</label>
+    <input type="text" id="usuario" name="usuario" required>
+
+    <label for="password">Contraseña:</label>
+    <input type="password" id="password" name="password" required>
+
+    <button type="submit" (click)="submit_form()">Entrar</button>
+</form>
+
+
+@if (form) {
+    <div>Formulario enviado correctamente.</div>
+}
