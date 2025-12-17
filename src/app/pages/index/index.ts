@@ -14,6 +14,7 @@ export class Index {
       nombre: 'Marc Pepe',
       email: 'ana.garcia@example.com',
       trabajando: true,
+      img: null,
     },
     {
       id: 3,
@@ -21,6 +22,7 @@ export class Index {
       nombre: 'Mar\u00eda L\u00f3pez',
       email: 'maria.lopez@example.com',
       trabajando: true,
+      img: null,
     },
     {
       id: 4,
@@ -28,6 +30,7 @@ export class Index {
       nombre: 'Laura Mart\u00ednez',
       email: 'laura.martinez@example.com',
       trabajando: true,
+      img: '/img/boo.jpg',
     },
   ];
 }
