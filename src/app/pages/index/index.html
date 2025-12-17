@@ -1,8 +1,18 @@
-    <div class="list-group mb-4">
-        @for (enfermero of enfermeros; track enfermero.id) {
-        <div class="list-group-item d-flex justify-content-between align-items-center">
-            <span>{{ enfermero.nombre }}</span>
-            <small class="text-muted">{{ enfermero.email }}</small>
-        </div>
+<div class="list-group mb-4">
+    @for (enfermero of enfermeros; track enfermero.id) {
+    <div class="list-group-item d-flex justify-content-between align-items-center">
+
+        <span>{{ enfermero.nombre }}</span>
+
+        <small class="text-muted">{{ enfermero.email }}</small>
+
+        @if (enfermero.img) {
+        <img [src]="enfermero.img" class="rounded-circle object-fit-cover" style="width:40px; height:40px;"
+            alt="Imagen enfermero">
+        } @else {
+        <span class="badge bg-secondary">No image</span>
         }
+
     </div>
+    }
+</div>
