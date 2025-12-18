@@ -1,14 +1,29 @@
-<form action="/login" method="post">
-    <label for="usuario">Usuario:</label>
-    <input type="text" id="usuario" name="usuario" required>
-
-    <label for="password">Contraseña:</label>
-    <input type="password" id="password" name="password" required>
-
-    <button type="submit" (click)="submit_form()">Entrar</button>
-</form>
-
-
-@if (form) {
-    <div>Formulario enviado correctamente.</div>
-}
+<div id="wrapper">
+    <div id="form-box">
+        <h3>Nurse Login</h3>
+        <img id="form-img" src="img/nurse_login.png" width="160">
+        @if (submit) {
+            @for (msg of login_message; track $index) {
+                <p id="msg" [ngClass]="message_type">{{ msg }}</p>
+            }
+        }
+        <form (ngSubmit)="handleFormSubmit()">
+            <div class="label-container">
+                <label class="form-labels">
+                    E-Mail:
+                </label>
+                <input name="email" class="form-inputs" [(ngModel)]="email" type="email">
+            </div>
+            <div class="label-container">
+                <label class="form-labels">
+                    Password:
+                </label>
+                <input name="password" class="form-inputs" [(ngModel)]="password" type="password">
+            </div>
+            <div id="buttons">
+                <button class="form-buttons" type="submit">Log in</button>
+                <a routerLink="/"><button class="form-buttons">Home</button></a>
+            </div>
+        </form>
+    </div>
+</div>
