@@ -2,7 +2,8 @@
   <div class="logo">Adrian Palma & Marc Merino angular</div>
   <div class="links">
     <a routerLink="/" routerLinkActive="active">Home</a>
-    <a routerLink="/login" routerLinkActive="active">Login</a>
+    <a *ngIf="!nurseService.isLoggedIn()" routerLink="/login" routerLinkActive="active">Login</a>
+    <a *ngIf="nurseService.isLoggedIn()" (click)="logout()" href="#">Logout</a>
     <a routerLink="/index" routerLinkActive="active">Index</a>
     <a routerLink="/search" routerLinkActive="active">Búsqueda</a>
   </div>

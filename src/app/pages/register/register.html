@@ -1,2 +1,42 @@
-<app-header/>
-<p>register works!</p>
+<div id="wrapper">
+    <div id="form-box">
+        <h3>Nurse Register</h3>
+        <img id="form-img" src="img/nurse_login.png" width="160">
+        @if (submit) {
+            @for (msg of login_message; track $index) {
+                <p id="msg" [ngClass]="message_type">{{ msg }}</p>
+            }
+        }
+        <form (ngSubmit)="handleFormSubmit()">
+            <div class="label-container">
+                <label class="form-labels">
+                    Name:
+                </label>
+                <input name="name" class="form-inputs" [(ngModel)]="name" type="text">
+            </div>
+            <div class="label-container">
+                <label class="form-labels">
+                    E-Mail:
+                </label>
+                <input name="email" class="form-inputs" [(ngModel)]="email" type="email">
+            </div>
+            <div class="label-container">
+                <label class="form-labels">
+                    Password:
+                </label>
+                <input name="password" class="form-inputs" [(ngModel)]="password" type="password">
+            </div>
+            <div class="label-container">
+                <label class="form-labels">
+                    Image URL:
+                </label>
+                <input name="image" class="form-inputs" [(ngModel)]="imageUrl" type="url">
+            </div>
+            Already have an account? <a routerLink="/login">Log in.</a>
+            <div id="buttons">
+                <button class="form-buttons" type="submit">Register</button>
+                <a routerLink="/"><button class="form-buttons">Home</button></a>
+            </div>
+        </form>
+    </div>
+</div>

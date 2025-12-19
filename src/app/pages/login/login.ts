@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { NurseData } from '../../nursedata';
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
-export class Login {
+export class Login implements OnInit {
   email = ''
   password = ''
 
@@ -20,10 +20,16 @@ export class Login {
   submit = false;
 
   constructor (
-    private nurseData: NurseData,
+    private nurseService: NurseData,
     private router: Router
   ) {}
   
+  ngOnInit(): void {
+    if (this.nurseService.isLoggedIn()) {
+      this.router.navigate(['']);
+    }
+  }
+
   handleFormSubmit() {
     this.submit = true;
     this.login_message = [];
@@ -46,7 +52,7 @@ export class Login {
 
     // Login method returns a boolean, this is used here to verify if the login went smoothly.
     // The user is automatically logged in, as the method already does the process before returning true or false.
-    const success = this.nurseData.login(this.email, this.password);
+    const success = this.nurseService.login(this.email, this.password);
 
     if (!success) {
       this.login_message = ["Invalid email or password."]
