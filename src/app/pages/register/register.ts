@@ -54,7 +54,7 @@ export class Register implements OnInit {
       this.login_message.push('Password must be at least 8 characters long.')
     }
 
-    if (!this.validateImageUrl(this.imageUrl)) {
+    if (this.imageUrl && !this.validateImageUrl(this.imageUrl)) {
       this.login_message.push('Image URL formatted incorrectly. URLs should end in .png, .jpg, .jpeg')
     }
 
