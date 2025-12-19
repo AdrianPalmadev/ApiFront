@@ -12,25 +12,26 @@
                 <label class="form-labels">
                     Name:
                 </label>
-                <input name="name" class="form-inputs" [(ngModel)]="name" type="text">
+                <input name="name" class="form-inputs" [(ngModel)]="name" type="text" required>
             </div>
             <div class="label-container">
                 <label class="form-labels">
                     E-Mail:
                 </label>
-                <input name="email" class="form-inputs" [(ngModel)]="email" type="email">
+                <input name="email" class="form-inputs" [(ngModel)]="email" type="email" required>
             </div>
             <div class="label-container">
                 <label class="form-labels">
                     Password:
                 </label>
-                <input name="password" class="form-inputs" [(ngModel)]="password" type="password">
+                <input name="password" class="form-inputs" [(ngModel)]="password" type="password" required>
             </div>
+            <!--optional!-->
             <div class="label-container">
                 <label class="form-labels">
                     Image URL:
                 </label>
-                <input name="image" class="form-inputs" [(ngModel)]="imageUrl" type="url">
+                <input name="image" class="form-inputs" [(ngModel)]="imageUrl" type="url" >
             </div>
             Already have an account? <a routerLink="/login">Log in.</a>
             <div id="buttons">
