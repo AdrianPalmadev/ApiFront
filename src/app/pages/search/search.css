@@ -1,0 +1,49 @@
+.page {
+    max-width: 50dvw;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+.search {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+}
+
+img {
+    height: 120px;
+}
+
+.nurse-table {
+    width: 100%;
+    background-color: white;
+    border: 1px solid #ccc;
+}
+
+.nurse-table thead {
+    background-color: #f3f4f6;
+}
+
+.nurse-table th,
+.nurse-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+}
+
+.nurse-table th {
+    font-weight: bold;
+    font-size: 1rem;
+    color: #374151;
+}
+
+.nurse-table tbody tr {
+    border-top: 1px solid #e5e7eb;
+}
+
+.nurse-table tbody tr:nth-child(even) {
+    background-color: #f9fafb;
+}

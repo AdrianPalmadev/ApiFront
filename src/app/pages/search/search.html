@@ -1,2 +1,28 @@
 <app-header/>
-<p>search works!</p>
+<div class="page">
+    <input
+        type="text"
+        placeholder="Enter nurse's name..."
+        [(ngModel)]="term"
+        class="search"
+    />
+
+    <table class="nurse-table">
+        <thead>
+            <tr>
+                <th>Nurse name</th>
+                <th>Nurse email</th>
+                <th>Nurse's profile picture</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (nurse of filteredNurses; track $index) {
+                <tr>
+                    <td>{{ nurse.name }}</td>
+                    <td>{{ nurse.email }}</td>
+                    <td><img [src]="nurse.imageUrl" alt="[NO IMAGE]"/></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
