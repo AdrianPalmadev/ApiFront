@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Nurse } from './nurse';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root',
@@ -58,7 +60,10 @@ export class NurseData {
   }
 
   // Use this for search, this should call the API to return data from DB.
-  getNurses(): Nurse[] {
+  getNurses():Nurse[] {
     return this.nurses;
+  }
+  getAllNurses():Observable<Nurse[]> {
+    return this.conexHttp.get<Nurse[]>(this.url + "index");
   }
 }
