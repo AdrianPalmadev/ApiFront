@@ -1,46 +1,71 @@
 <app-header></app-header>
 
-<div class="container mt-5 pt-4">
+<!-- ERROR -->
+@if (errorMessage) {
+  <div class="container mt-4">
+    <div class="alert alert-danger text-center">
+      {{ errorMessage }}
+    </div>
+  </div>
+}
+
+<!-- LOADING -->
+@if (loading) {
+  <div class="container mt-5 text-center">
+    <div class="spinner-border" role="status"></div>
+  </div>
+}
+
+<!-- LISTADO -->
+@if (!loading && !errorMessage) {
+
+  <div class="container mt-5 pt-4">
 
     <div class="container mt-4">
-        <div class="row g-3">
+      <div class="row g-3">
 
-            @for (nurse of nurses; track nurse.id) {
-            <div class="col-12">
+        @for (nurse of nurses; track nurse.id) {
+        <div class="col-12">
 
-                <div class="card shadow-sm border-0 rounded-4 p-3">
-                    <div class="d-flex align-items-center justify-content-between">
+          <div class="card shadow-sm border-0 rounded-4 p-3">
+            <div class="d-flex align-items-center justify-content-between">
 
-                        <!-- Left: Image + Info -->
-                        <div class="d-flex align-items-center gap-3">
+              <!-- Left: Image + Info -->
+              <div class="d-flex align-items-center gap-3">
 
-                            @if (nurse.imageUrl) {
-                            <img [src]="nurse.imageUrl" class="rounded-circle object-fit-cover"
-                                style="width:48px; height:48px;" alt="Imagen nurse">
-                            } @else {
-                            <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center"
-                                style="width:48px; height:48px; font-size:12px;">
-                                N/A
-                            </div>
-                            }
-
-                            <div>
-                                <div class="fw-semibold">{{ nurse.name }}</div>
-                                <small class="text-muted">{{ nurse.email }}</small>
-                            </div>
-                        </div>
-
-                        <!-- Right: Action -->
-                        <span class="badge bg-light text-dark border px-3 py-2 rounded-pill">
-                            Nurse
-                        </span>
-
-                    </div>
+                @if (nurse.imageUrl) {
+                <img
+                  [src]="nurse.imageUrl"
+                  class="rounded-circle object-fit-cover"
+                  style="width:48px; height:48px;"
+                  alt="Imagen nurse">
+                } @else {
+                <div
+                  class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center"
+                  style="width:48px; height:48px; font-size:12px;">
+                  N/A
                 </div>
+                }
+
+                <div>
+                  <div class="fw-semibold">{{ nurse.name }}</div>
+                  <small class="text-muted">{{ nurse.email }}</small>
+                </div>
+              </div>
+
+              <!-- Right: Action -->
+              <span class="badge bg-light text-dark border px-3 py-2 rounded-pill">
+                Nurse
+              </span>
 
             </div>
-            }
+          </div>
 
         </div>
+        }
+
+      </div>
     </div>
-</div>
+
+  </div>
+}
