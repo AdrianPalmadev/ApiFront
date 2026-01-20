@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Header } from "../../components/header/header";
+import { Nurse } from '../../nurse';
+import { NurseData } from '../../nursedata';
 
 @Component({
   selector: 'app-index',
@@ -7,31 +9,17 @@ import { Header } from "../../components/header/header";
   templateUrl: './index.html',
   styleUrl: './index.css',
 })
-export class Index {
-  enfermeros = [
-    {
-      id: 2,
-      usuario: 'ana.garcia',
-      nombre: 'Marc Pepe',
-      email: 'ana.garcia@example.com',
-      trabajando: true,
-      img: null,
-    },
-    {
-      id: 3,
-      usuario: 'maria.lopez',
-      nombre: 'Mar\u00eda L\u00f3pez',
-      email: 'maria.lopez@example.com',
-      trabajando: true,
-      img: null,
-    },
-    {
-      id: 4,
-      usuario: 'laura.martinez',
-      nombre: 'Laura Mart\u00ednez',
-      email: 'laura.martinez@example.com',
-      trabajando: true,
-      img: '/img/boo.jpg',
-    },
-  ];
+export class Index implements OnInit {
+
+  nurses: Nurse[] = [];
+
+  constructor(private nurseservice: NurseData) {}
+
+  ngOnInit(): void {
+    this.nurseservice.getAllNurses()
+      .subscribe(result => {
+        this.nurses = result;
+        console.log(result);
+      });
+  }
 }

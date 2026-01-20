@@ -1,19 +1,46 @@
-<app-header/>
-<div class="list-group mb-4">
-    @for (enfermero of enfermeros; track enfermero.id) {
-    <div class="list-group-item d-flex justify-content-between align-items-center">
+<app-header></app-header>
 
-        <span>{{ enfermero.nombre }}</span>
+<div class="container mt-5 pt-4">
 
-        <small class="text-muted">{{ enfermero.email }}</small>
+    <div class="container mt-4">
+        <div class="row g-3">
 
-        @if (enfermero.img) {
-        <img [src]="enfermero.img" class="rounded-circle object-fit-cover" style="width:40px; height:40px;"
-            alt="Imagen enfermero">
-        } @else {
-        <span class="badge bg-secondary">No image</span>
-        }
+            @for (nurse of nurses; track nurse.id) {
+            <div class="col-12">
 
+                <div class="card shadow-sm border-0 rounded-4 p-3">
+                    <div class="d-flex align-items-center justify-content-between">
+
+                        <!-- Left: Image + Info -->
+                        <div class="d-flex align-items-center gap-3">
+
+                            @if (nurse.imageUrl) {
+                            <img [src]="nurse.imageUrl" class="rounded-circle object-fit-cover"
+                                style="width:48px; height:48px;" alt="Imagen nurse">
+                            } @else {
+                            <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center"
+                                style="width:48px; height:48px; font-size:12px;">
+                                N/A
+                            </div>
+                            }
+
+                            <div>
+                                <div class="fw-semibold">{{ nurse.name }}</div>
+                                <small class="text-muted">{{ nurse.email }}</small>
+                            </div>
+                        </div>
+
+                        <!-- Right: Action -->
+                        <span class="badge bg-light text-dark border px-3 py-2 rounded-pill">
+                            Nurse
+                        </span>
+
+                    </div>
+                </div>
+
+            </div>
+            }
+
+        </div>
     </div>
-    }
 </div>
