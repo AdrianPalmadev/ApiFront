@@ -12,16 +12,25 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './search.css',
 })
 export class Search {
-  term: string = '';
 
-  constructor(
-    public nurseService: NurseData
-  ) {}
+  constructor(private nurseservice: NurseData) {}
 
-  get filteredNurses(): Nurse[]
-  {
-    const term = this.term.toLowerCase();
+  searchName = '';
+  nurses: Nurse[] = [];
+  errorMessage: string | null = null;
 
-    return this.nurseService.getNurses().filter(n => n.name.toLowerCase().includes(term));
+  searchNurse() {
+    this.errorMessage = null;
+
+    this.nurseservice.searchByName(this.searchName).subscribe({
+      next: (result) => {
+        this.nurses = result;
+        console.log(result);
+      },
+      error: () => {
+        this.nurses = [];
+        this.errorMessage = 'No se encontró ninguna nurse con ese nombre';
+      },
+    });
   }
 }
