@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Nurse } from './nurse';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, catchError, tap, throwError } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 
 
 @Injectable({
   providedIn: 'root',
 })
 export class NurseData {
-  private nurses: Nurse[] = []; // This will eventually have data loaded in by the DB.
-  private currentNurse: Nurse | null = null; // This should be a cookie.
-
-  constructor(private conexHttp: HttpClient) {}
+  constructor(
+    private conexHttp: HttpClient, 
+    private cookieService: CookieService,
+    private router: Router  
+  ) {}
   url = 'http://127.0.0.1:8000/nurse/';
 
   /*
@@ -23,47 +26,74 @@ export class NurseData {
   If any of them are missing, Nurse cannot be built.
   */
 
-  register(newNurse: Nurse): boolean {
-    //! API should do this.
-    if (this.nurses.find((n) => n.email == newNurse.email)) {
-      return false;
-    }
+  register(newNurse: Nurse): Observable<Nurse> {
+    return this.conexHttp.post<Nurse>(this.url, newNurse).pipe(
+      // If there's an error in the request, this logic handles the error and displays it to the user.
+      catchError((error: HttpErrorResponse) => {
+        console.error("Could not register nurse: ", error);
 
-    this.nurses.push(newNurse);
-    return true;
-  }
+        let errorMessage = 'An error occurred while registering the nurse.';
 
-  login(email: string, password: string): boolean {
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Error ${error.error.message}`;
+        } else {
+          errorMessage = `Error Code: ${error.status}\nMessage ${error.message}`;
+        }
+
+        return throwError(() => new Error(errorMessage)); 
+      })
+    );
+  };
+
+  login(email: string, password: string): Observable<Nurse> {
     // Nurse is read if the nurse is found by the email provided and the password is correct.
-    const nurse = this.nurses.find((n) => n.email == email && n.password == password);
+    return this.conexHttp.post<Nurse>(this.url, {email, password}).pipe(
+      // Load a cookie containing nurse data, this is useful to keep data stable during the user's stance on the website.
+      tap((nurse: Nurse) => {
+        this.cookieService.set('currentNurse', JSON.stringify(nurse));
 
-    // The credentials are incorrect? Return an error.
-    //! Again, the API should do this. This method should call the API to process the data.
-    if (!nurse) {
-      return false;
-    }
+        this.cookieService.set(
+          'currentNurse',
+          JSON.stringify(nurse),
+          1, // Expires in 24h
+          '/',
+          undefined,
+          true,
+          'Strict'
+        );
+      }),
 
-    // Assign this nurse as the current logged user.
-    // This should be replaced with a cookie.
-    this.currentNurse = nurse;
-    return true;
+      // Are the credentials incorrect? Return an error and do nothing.
+      catchError((error: HttpErrorResponse) => {
+        let errorMessage = 'An error occurred while logging in.';
+
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Error ${error.error.message}`;
+        } else {
+          errorMessage = `Error Code: ${error.status}\nMessage ${error.message}`;
+        }
+
+        return throwError(() => new Error(errorMessage));
+      })
+    );
   }
 
-  // This method is incomplete, not only it should be better to clear the cookie,
-  // but the API must also know the user has been logged out.
+  // This method clears the cookie set by login and returns the user back to the login page.
   logout(): void {
-    this.currentNurse = null;
+    this.cookieService.delete('currentNurse');
+    // Returns the user to the login page.
+    this.router.navigate(['/login']);
   }
 
   isLoggedIn(): boolean {
-    return this.currentNurse !== null;
+    return this.cookieService.check('currentNurse');
   }
 
-  // Use this for search, this should call the API to return data from DB.
-  getNurses():Nurse[] {
-    return this.nurses;
-  }
   getAllNurses():Observable<Nurse[]> {
     return this.conexHttp.get<Nurse[]>(this.url + "index");
+  }
+
+  searchByName(name: string): Observable<Nurse[]> {
+    return this.conexHttp.get<Nurse[]>(this.url + 'name/' + name);
   }
 }
