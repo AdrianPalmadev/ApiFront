@@ -6,7 +6,6 @@ import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import { environment } from './environments/environments';
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -96,7 +95,6 @@ export class NurseData {
 
   getAllNurses():Observable<Nurse[]> {
     return this.conexHttp.get<Nurse[]>(this.url + "index");
-  }
 
   searchByName(name: string): Observable<Nurse[]> {
     return this.conexHttp.get<Nurse[]>(this.url + 'name/' + name);
