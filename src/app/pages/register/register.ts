@@ -15,6 +15,8 @@ import { Nurse } from '../../nurse';
 
 export class Register implements OnInit {
   name: string = '';
+  surname: string = '';
+  fullname: string = '';
   email: string = '';
   password: string = '';
   imageUrl: string = '';
@@ -62,25 +64,32 @@ export class Register implements OnInit {
       return;
     }
 
+    this.fullname = this.name + ' ' + this.surname;
     // Building a new nurse object for the registration.
     const nurse: Nurse =
     {
-      name: this.name,
+      user: this.nameToUsername(this.fullname),
+      name: this.fullname,
       email: this.email,
       password: this.password,
+      working: true,
       imageUrl: this.imageUrl
     }
 
-    const success = this.nurseService.register(nurse);
+    const success = this.nurseService.register(nurse).subscribe({
+      next: () => {
+        this.router.navigate(['login']);
+      },
+      error: (error) => {
+        this.login_message = ["There was an error registering the nurse.\n" + error?.message];
+      }
+    });
 
     // Only current message it should return is matching emails, this can be scaled to return other messages.
     if (!success) {
-      this.login_message = ["A nurse with that email already exists!"];
+      this.login_message = ["There was an error processing your request."]; // Mask the true error as it can reveal info to attackers.
       return;
     }
-
-    // After everything, it asks the user to log in.
-    this.router.navigate(['/login']);
   }
 
   validateEmail(email: string): boolean {
@@ -94,4 +103,14 @@ export class Register implements OnInit {
       /^(https?:\/\/.*\.(?:png|jpe?g))$/i.test(url)
     );
   }
+
+  nameToUsername(name: string): string {
+  return name
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s]/g, '')
+    .replace(/\s+/g, '.'); 
+}
 }

@@ -52,15 +52,21 @@ export class Login implements OnInit {
 
     // Login method returns a boolean, this is used here to verify if the login went smoothly.
     // The user is automatically logged in, as the method already does the process before returning true or false.
-    const success = this.nurseService.login(this.email, this.password);
+    const success = this.nurseService.login(this.email, this.password).subscribe({
+      next: () => {
+        // After everything, it returns home.
+        this.router.navigate(['']);
+      },
+      error: (error) => {
+        this.login_message = ["There was an error during login.\n" + error?.message];
+      }
+    });
 
     if (!success) {
       this.login_message = ["Invalid email or password."]
       return;
     }
 
-    // After everything, it returns home.
-    this.router.navigate(['']);
   }
 
   validateEmail(email: string): boolean {

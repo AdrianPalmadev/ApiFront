@@ -4,6 +4,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { environment } from './environments/environments';
 
 
 @Injectable({
@@ -15,7 +16,8 @@ export class NurseData {
     private cookieService: CookieService,
     private router: Router  
   ) {}
-  url = 'http://127.0.0.1:8000/nurse/';
+
+  private url = environment.url;
 
   /*
   Nurse is composed of the following elements:
@@ -27,7 +29,7 @@ export class NurseData {
   */
 
   register(newNurse: Nurse): Observable<Nurse> {
-    return this.conexHttp.post<Nurse>(this.url, newNurse).pipe(
+    return this.conexHttp.post<Nurse>(this.url + 'create', newNurse).pipe(
       // If there's an error in the request, this logic handles the error and displays it to the user.
       catchError((error: HttpErrorResponse) => {
         console.error("Could not register nurse: ", error);
@@ -41,13 +43,16 @@ export class NurseData {
         }
 
         return throwError(() => new Error(errorMessage)); 
+      }),
+      tap(() => {
+        this.router.navigate(['/login']);
       })
     );
   };
 
   login(email: string, password: string): Observable<Nurse> {
     // Nurse is read if the nurse is found by the email provided and the password is correct.
-    return this.conexHttp.post<Nurse>(this.url, {email, password}).pipe(
+    return this.conexHttp.post<Nurse>(this.url + 'login', {email, password}).pipe(
       // Load a cookie containing nurse data, this is useful to keep data stable during the user's stance on the website.
       tap((nurse: Nurse) => {
         this.cookieService.set('currentNurse', JSON.stringify(nurse));
