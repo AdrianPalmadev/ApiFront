@@ -11,9 +11,9 @@ import { environment } from './environments/environments';
 })
 export class NurseData {
   constructor(
-    private conexHttp: HttpClient, 
+    private conexHttp: HttpClient,
     private cookieService: CookieService,
-    private router: Router  
+    private router: Router,
   ) {}
 
   private url = environment.url;
@@ -31,7 +31,7 @@ export class NurseData {
     return this.conexHttp.post<Nurse>(this.url + 'create', newNurse).pipe(
       // If there's an error in the request, this logic handles the error and displays it to the user.
       catchError((error: HttpErrorResponse) => {
-        console.error("Could not register nurse: ", error);
+        console.error('Could not register nurse: ', error);
 
         let errorMessage = 'An error occurred while registering the nurse.';
 
@@ -41,17 +41,17 @@ export class NurseData {
           errorMessage = `Error Code: ${error.status}\nMessage ${error.message}`;
         }
 
-        return throwError(() => new Error(errorMessage)); 
+        return throwError(() => new Error(errorMessage));
       }),
       tap(() => {
         this.router.navigate(['/login']);
-      })
+      }),
     );
-  };
+  }
 
   login(email: string, password: string): Observable<Nurse> {
     // Nurse is read if the nurse is found by the email provided and the password is correct.
-    return this.conexHttp.post<Nurse>(this.url + 'login', {email, password}).pipe(
+    return this.conexHttp.post<Nurse>(this.url + 'login', { email, password }).pipe(
       // Load a cookie containing nurse data, this is useful to keep data stable during the user's stance on the website.
       tap((nurse: Nurse) => {
         this.cookieService.set('currentNurse', JSON.stringify(nurse));
@@ -63,7 +63,7 @@ export class NurseData {
           '/',
           undefined,
           true,
-          'Strict'
+          'Strict',
         );
       }),
 
@@ -78,7 +78,7 @@ export class NurseData {
         }
 
         return throwError(() => new Error(errorMessage));
-      })
+      }),
     );
   }
 
@@ -93,8 +93,9 @@ export class NurseData {
     return this.cookieService.check('currentNurse');
   }
 
-  getAllNurses():Observable<Nurse[]> {
-    return this.conexHttp.get<Nurse[]>(this.url + "index");
+  getAllNurses(): Observable<Nurse[]> {
+    return this.conexHttp.get<Nurse[]>(this.url + 'index');
+  }
 
   searchByName(name: string): Observable<Nurse[]> {
     return this.conexHttp.get<Nurse[]>(this.url + 'name/' + name);
