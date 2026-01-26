@@ -17,10 +17,10 @@ export const routes: Routes = [
     path: 'register',
     loadComponent: () => import('./pages/register/register').then((m) => m.Register),
   },
-  // {
-  //   path: 'search',
-  //   loadComponent: () => import('./pages/search/search').then((m) => m.Search),
-  // },
+  {
+    path: 'search',
+    loadComponent: () => import('./pages/search/search').then((m) => m.Search),
+  },
   {
     path: 'index',
     loadComponent: () => import('./pages/index/index').then((m) => m.Index),

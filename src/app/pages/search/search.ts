@@ -1,9 +1,9 @@
-// import { Component } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-// import { Header } from '../../components/header/header';
-// import { NurseData } from '../../nursedata';
-// import { Nurse } from '../../nurse';
-// import { FormsModule } from '@angular/forms';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Header } from '../../components/header/header';
+import { NurseData } from '../../nursedata';
+import { Nurse } from '../../nurse';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-search',
