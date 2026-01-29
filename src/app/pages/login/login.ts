@@ -58,7 +58,7 @@ export class Login implements OnInit {
         this.router.navigate(['']);
       },
       error: (error) => {
-        this.login_message = ["There was an error during login.\n" + error?.message];
+        this.login_message = [error?.message];
       }
     });
 

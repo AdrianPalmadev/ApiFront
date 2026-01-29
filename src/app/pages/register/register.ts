@@ -81,7 +81,7 @@ export class Register implements OnInit {
         this.router.navigate(['login']);
       },
       error: (error) => {
-        this.login_message = ["There was an error registering the nurse.\n" + error?.message];
+        this.login_message = [error?.message];
       }
     });
 
