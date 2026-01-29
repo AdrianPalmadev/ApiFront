@@ -136,7 +136,53 @@ export class NurseData {
     return this.conexHttp.get<Nurse[]>(this.url + 'name/' + name);
   }
 
-  // Helper methods:
+  getCurrentNurse(): Nurse | null {
+    const nurse = this.cookieService.get('currentNurse');
+    return nurse ? JSON.parse(nurse) : null;
+  }
+  
+  editNurse(id: number, nurse: Nurse): Observable<any> {
+    return this.conexHttp
+      .put(`${this.url}${id}`, {
+        name: nurse.name,
+        user: nurse.user,
+        password: nurse.password,
+        email: nurse.email,
+        working: nurse.working,
+        imageUrl: nurse.imageUrl,
+      })
+      .pipe(
+        tap((response: any) => {
+          // Actualizamos la cookie con los nuevos datos
+          const updatedNurse = {
+            ...this.getCurrentNurse(),
+            ...nurse,
+            imageUrl: response.imageUrl ?? nurse.imageUrl,
+          };
+
+          this.cookieService.set(
+            'currentNurse',
+            JSON.stringify(updatedNurse),
+            1,
+            '/',
+            undefined,
+            true,
+            'Strict',
+          );
+        }),
+        catchError((error: HttpErrorResponse) => {
+          let errorMessage = 'Error updating nurse';
+
+          if (error.error instanceof ErrorEvent) {
+            errorMessage = error.error.message;
+          } else {
+            errorMessage = `Error ${error.status}: ${error.message}`;
+          }
+
+          return throwError(() => new Error(errorMessage));
+        }),
+      )
+  };
 
   validateEmail(email: string): boolean {
     return (
