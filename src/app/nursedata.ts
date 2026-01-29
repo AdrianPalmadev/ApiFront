@@ -135,4 +135,28 @@ export class NurseData {
   searchByName(name: string): Observable<Nurse[]> {
     return this.conexHttp.get<Nurse[]>(this.url + 'name/' + name);
   }
+
+  // Helper methods:
+
+  validateEmail(email: string): boolean {
+    return (
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.toLowerCase())
+    );
+  }
+
+  validateImageUrl(url: string): boolean {
+  return (
+      /^(https?:\/\/.*\.(?:png|jpe?g))$/i.test(url)
+    );
+  }
+
+  nameToUsername(name: string): string {
+  return name
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s]/g, '')
+    .replace(/\s+/g, '.'); 
+  }
 }
