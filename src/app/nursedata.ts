@@ -31,14 +31,30 @@ export class NurseData {
     return this.conexHttp.post<Nurse>(this.url + 'create', newNurse).pipe(
       // If there's an error in the request, this logic handles the error and displays it to the user.
       catchError((error: HttpErrorResponse) => {
-        console.error('Could not register nurse: ', error);
-
         let errorMessage = 'An error occurred while registering the nurse.';
 
-        if (error.error instanceof ErrorEvent) {
-          errorMessage = `Error ${error.error.message}`;
+        if (error.status === 0) {
+          errorMessage = 'Cannot connect to server. Please check your connection.';
+        } else if (error.error instanceof ErrorEvent) {
+          errorMessage = `Client error: ${error.error.message}`;
         } else {
-          errorMessage = `Error Code: ${error.status}\nMessage ${error.message}`;
+          // Try to extract the API's error message
+          // This handles both 'error' and 'message' properties from the API responses
+          errorMessage = error.error?.error || error.error?.message || errorMessage;
+          
+          // If no custom message, use status-based fallback
+          if (errorMessage === 'An error occurred while registering the nurse.') {
+            switch (error.status) {
+              case 400:
+                errorMessage = 'Invalid request. Please check your input.';
+                break;
+              case 500:
+                errorMessage = 'Server error. Please try again later.';
+                break;
+              default:
+                errorMessage = `Server returned error ${error.status}`;
+            }
+          }
         }
 
         return throwError(() => new Error(errorMessage));
@@ -66,19 +82,38 @@ export class NurseData {
           'Strict',
         );
       }),
-
       // Are the credentials incorrect? Return an error and do nothing.
       catchError((error: HttpErrorResponse) => {
         let errorMessage = 'An error occurred while logging in.';
-
-        if (error.error instanceof ErrorEvent) {
-          errorMessage = `Error ${error.error.message}`;
+      
+        if (error.status === 0) {
+          errorMessage = 'Cannot connect to server. Please check your connection.';
+        } else if (error.error instanceof ErrorEvent) {
+          errorMessage = `Client error: ${error.error.message}`;
         } else {
-          errorMessage = `Error Code: ${error.status}\nMessage ${error.message}`;
+          // Try to extract the API's error message
+          // This handles both 'error' and 'message' properties from the API responses
+          errorMessage = error.error?.error || error.error?.message || errorMessage;
+          
+          // If no custom message, use status-based fallback
+          if (errorMessage === 'An error occurred while logging in.') {
+            switch (error.status) {
+              case 400:
+                errorMessage = 'Invalid request. Please check your input.';
+                break;
+              case 404:
+                errorMessage = 'Login failed. Please check your credentials.';
+                break;
+              case 500:
+                errorMessage = 'Server error. Please try again later.';
+                break;
+              default:
+                errorMessage = `Server returned error ${error.status}`;
+            }
+          }
         }
-
         return throwError(() => new Error(errorMessage));
-      }),
+      })
     );
   }
 
@@ -147,5 +182,27 @@ export class NurseData {
           return throwError(() => new Error(errorMessage));
         }),
       );
+    
+  // Helper methods:
+  validateEmail(email: string): boolean {
+    return (
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.toLowerCase())
+    );
+  }
+
+  validateImageUrl(url: string): boolean {
+  return (
+      /^(https?:\/\/.*\.(?:png|jpe?g))$/i.test(url)
+    );
+  }
+
+  nameToUsername(name: string): string {
+  return name
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s]/g, '')
+    .replace(/\s+/g, '.'); 
   }
 }

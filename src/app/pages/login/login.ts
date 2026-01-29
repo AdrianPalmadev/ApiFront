@@ -38,7 +38,7 @@ export class Login implements OnInit {
       this.login_message.push('Email cannot be empty.')
     }
 
-    if (!this.validateEmail(this.email)) {
+    if (!this.nurseService.validateEmail(this.email)) {
       this.login_message.push('Email formatted incorrectly.')
     }
 
@@ -50,29 +50,18 @@ export class Login implements OnInit {
       return;
     }
 
-    // Login method returns a boolean, this is used here to verify if the login went smoothly.
-    // The user is automatically logged in, as the method already does the process before returning true or false.
-    const success = this.nurseService.login(this.email, this.password).subscribe({
+    /**
+     * This method does the signing process for the nurse, depending on what it returns, it will either
+     * spit out an error or reroute the user to home.
+     */
+    this.nurseService.login(this.email, this.password).subscribe({
       next: () => {
-        // After everything, it returns home.
         this.router.navigate(['']);
       },
       error: (error) => {
-        this.login_message = ["There was an error during login.\n" + error?.message];
+        this.login_message = [error?.message];
       }
     });
-
-    if (!success) {
-      this.login_message = ["Invalid email or password."]
-      return;
-    }
-
-  }
-
-  validateEmail(email: string): boolean {
-    return (
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.toLowerCase())
-    );
   }
 
 }
