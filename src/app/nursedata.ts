@@ -181,9 +181,9 @@ export class NurseData {
 
           return throwError(() => new Error(errorMessage));
         }),
-      );
-    
-  // Helper methods:
+      )
+  };
+
   validateEmail(email: string): boolean {
     return (
       /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.toLowerCase())
